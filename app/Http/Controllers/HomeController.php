@@ -49,7 +49,7 @@ class HomeController extends Controller
         $info['label']=$labels;
         $info['books']=$articles;
         dump($info);
-        return $ssurl;
+        return ;
     }
 
     /**
