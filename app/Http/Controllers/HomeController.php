@@ -35,10 +35,15 @@ class HomeController extends Controller
         return view('home');
     }
 
-    public function getContent($search='')
+    /**
+     * 获取内容
+     * @param string $search
+     *
+     */
+    public function getContent($search='',$page=0)
     {
         $info=[];
-        $ssurl = hh_out((get_URL("http://zhannei.baidu.com/cse/search?q=" . $search . "&click=1&s=17194782488582577862&nsid=")));
+        $ssurl=hh_out((get_URL("http://zhannei.baidu.com/cse/search?q=" . $search . "&p=".$page."&s=17194782488582577862&nsid=")));
         preg_match_all('/<a cpos="title" href="(.*?)" title="(.*?)" class="result-game-item-title-link" target="_blank">/', $ssurl, $tt);
         preg_match_all('/<span class="result-game-item-info-tag-title preBold">类型：<\/span> <span class="result-game-item-info-tag-title">(.*?)<\/span>/', $ssurl, $txtid);
         preg_match_all('/<span class="result-game-item-info-tag-title preBold">作者：<\/span> <span>(.*?)<\/span>/', $ssurl, $by);
@@ -48,6 +53,9 @@ class HomeController extends Controller
 //        dump($articles);
         $info['label']=$labels;
         $info['books']=$articles;
+        $info['last']=$this->getLast($ssurl);
+        $info['next']=$this->getNext($ssurl);
+//        $info['content']=$ssurl;
         dump($info);
         return ;
     }
@@ -101,5 +109,33 @@ class HomeController extends Controller
 
         return $result;
 
+    }
+
+    /**
+     * 查找有没有下一页
+     * @param $content
+     * @return bool
+     */
+    private function getLast($content){
+        preg_match_all("/a href=\"search?(.*)\" class=\"pager-previous-foot n\" /",$content,$last);
+        if(empty($last)) return false;
+        if(empty($last[1])) return false;
+        $lastArray=explode('=',$last[1][0]);
+        $lastNum=substr($lastArray[2],0,1);
+        return $lastNum;
+    }
+
+    /**
+     * 查找有没有下一页
+     * @param $content
+     * @return bool
+     */
+    private function getNext($content){
+        preg_match_all("/<\/a>                                                                                            <a href=\"search?(.*)\" class=\"pager-next-foot n\" /",$content,$next);
+        if(empty($next)) return false;
+        $nextArray=explode('=',$next[1][0]);
+        $nextNum=substr($nextArray[2],0,1);
+        return $nextNum;
+//        return $next[1][0];
     }
 }
