@@ -40,8 +40,12 @@ class HomeController extends Controller
      * @param string $search
      *
      */
-    public function getContent($search='',$page=0)
+    public function getContent(Request $request,$page=0)
     {
+        $search=$request->get('s');
+        $search=empty($search) ? '':$search;
+//        $page=$request->get('p');
+//        $page=empty($page)? 0 :$page;
         $info=[];
         $ssurl=hh_out((get_URL("http://zhannei.baidu.com/cse/search?q=" . $search . "&p=".$page."&s=17194782488582577862&nsid=")));
         preg_match_all('/<a cpos="title" href="(.*?)" title="(.*?)" class="result-game-item-title-link" target="_blank">/', $ssurl, $tt);
@@ -57,7 +61,7 @@ class HomeController extends Controller
         $info['next']=$this->getNext($ssurl);
 //        $info['content']=$ssurl;
         dump($info);
-        return ;
+        return view('article.index')->with('info',$info);
     }
 
     /**
@@ -92,6 +96,7 @@ class HomeController extends Controller
         //get link
         preg_match_all('/<a cpos="title" href="(.*?)" title/',$content,$link);
         foreach ($link[1]as $key=>$value){
+
             $result[$key]['link']=$value;
         }
         //get name
@@ -133,6 +138,7 @@ class HomeController extends Controller
     private function getNext($content){
         preg_match_all("/<\/a>                                                                                            <a href=\"search?(.*)\" class=\"pager-next-foot n\" /",$content,$next);
         if(empty($next)) return false;
+        if(empty($next[1])) return false;
         $nextArray=explode('=',$next[1][0]);
         $nextNum=substr($nextArray[2],0,1);
         return $nextNum;
