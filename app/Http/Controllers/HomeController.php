@@ -42,10 +42,9 @@ class HomeController extends Controller
      */
     public function getContent(Request $request,$page=0)
     {
+
         $search=$request->get('s');
         $search=empty($search) ? '':$search;
-//        $page=$request->get('p');
-//        $page=empty($page)? 0 :$page;
         $info=[];
         $ssurl=hh_out((get_URL("http://zhannei.baidu.com/cse/search?q=" . $search . "&p=".$page."&s=17194782488582577862&nsid=")));
         preg_match_all('/<a cpos="title" href="(.*?)" title="(.*?)" class="result-game-item-title-link" target="_blank">/', $ssurl, $tt);
@@ -96,8 +95,12 @@ class HomeController extends Controller
         //get link
         preg_match_all('/<a cpos="title" href="(.*?)" title/',$content,$link);
         foreach ($link[1]as $key=>$value){
+            $specific=strstr($value,'xiaoshuo');
+            $specificArray=explode('/',$specific);
+            $array[0]=$specificArray[1];
+            $array[1]=$specificArray[2];
 
-            $result[$key]['link']=$value;
+            $result[$key]['link']=$array;
         }
         //get name
         preg_match_all("/class=\"result-game-item-title-link\" target=\"_blank\">                                    (.*?)                            <\/a> /",$content,$name);

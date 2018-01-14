@@ -11,7 +11,7 @@
                         <div class="caption">
                             <h3>{{$book['name']}}</h3>
                             <p>{{$book['summary']}}</p>
-                            <p><a href="{{route('articlePage',$book['link'])}}" class="btn btn-primary" role="button">Button</a> </p>
+                            <p><a href="{{route('getCatalogue',[$book['link'][0],$book['link'][1]])}}" class="btn btn-primary" role="button">Button</a> </p>
                         </div>
                     </div>
                 </div>
