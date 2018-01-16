@@ -21,3 +21,4 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/article/{page?}/{search?}','HomeController@getContent')->name('article');
 Route::get('/catalogue/{c1}/{c2}','BooksController@getCatalogue')->name('getCatalogue');
+Route::get('/book/{c1}/{c2}/{c3}','BooksController@getContent')->name('getContent');
