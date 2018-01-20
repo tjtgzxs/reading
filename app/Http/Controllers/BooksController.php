@@ -45,7 +45,13 @@ class BooksController extends Controller
        if(empty($rs['detail'])) $rs['detail']="不意思这个文章已经走丢了！";
       $rs['detail']=preg_replace("/<br \/>/","",$rs['detail']);
         $rs['detail']=preg_replace("/<\/div>/","",$rs['detail']);
-        
+        preg_match('/<div class=\"jump1\"><span>(.*)<\/span> <a href=\"(.*).html\"><<上一章/',$content,$lastPage);
+        preg_match('/标记书签<\/a> <a href=\"(.*).html\">下一章/',$content,$nextPage);
+        $rs['lastPage']=empty($lastPage) ? null :$lastPage[2];
+        $rs['nextPage']=empty($lastPage) ? null :$nextPage[1];
+        $rs['c1']=$c1;
+        $rs['c2']=$c2;
+        dump($rs);
        return view('article.detail')->with('info',$rs);
     }
 }
