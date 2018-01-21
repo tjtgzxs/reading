@@ -22,10 +22,10 @@
     <nav aria-label="...">
         <ul class="pager">
             @if(!empty($info['last']))
-                <li class="previous"><a href="{{route('article',[$info['last']])}}}"><span aria-hidden="true">&larr;</span> 上一页</a></li>
+                <li class="previous"><a href="{{route('article',[$info['last']])}}"><span aria-hidden="true">&larr;</span> 上一页</a></li>
             @endif
             @if(!empty($info['next']))
-                <li class="next"><a href="{{route('article',[$info['next']])}}}">下一页 <span aria-hidden="true">&rarr;</span></a></li>
+                <li class="next"><a href="{{route('article',[$info['next']])}}">下一页 <span aria-hidden="true">&rarr;</span></a></li>
             @endif
         </ul>
     </nav>
